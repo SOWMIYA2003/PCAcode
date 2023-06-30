@@ -1,5 +1,4 @@
 # PCA - ENTIRE CODE 
-
 ### GPU Based Vector Summation
 ```
 // invoke kernel at host side
