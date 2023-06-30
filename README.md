@@ -1,5 +1,16 @@
-# PCAmodel
-### GPU Based Vector  Summation
+# PCA - ENTIRE CODE 
+
+### GPU Based Vector Summation
+```
+// invoke kernel at host side
+int iLen = 1023;
+
+// invoke kernel at host side
+int iLen = 1024;
+
+// invoke kernel at host side
+int iLen = 215;
+```
 ```
 #include "common.h"
 #include <cuda_runtime.h>
@@ -48,15 +59,13 @@ void sumArraysOnHost(float *A, float *B, float *C, const int N)
         C[idx] = A[idx] + B[idx];
     }
 }
+
 __global__ void sumArraysOnGPU(float *A, float *B, float *C, const int N)
 {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (i < N) C[i] = A[i] + B[i];
 }
-
-
-
 int main(int argc, char **argv)
 {
     printf("%s Starting...\n", argv[0]);
@@ -143,9 +152,7 @@ int main(int argc, char **argv)
 
     return(0);
 }
-
 ```
-
 ### Matrix Summation using 2D grids and 2D blocks
 ```
 #include "common.h"
@@ -184,7 +191,6 @@ void sumMatrixOnHost(int *A, int *B, int *C, const int nx,const int ny)
     return;
 }
 
-
 void checkResult(int *hostRef, int *gpuRef, const int N)
 {
     double epsilon = 1.0E-8;
@@ -205,6 +211,9 @@ void checkResult(int *hostRef, int *gpuRef, const int N)
     else
         printf("Arrays do not match.\n\n");
 }
+
+
+
 // grid 2D block 2D
 __global__ void sumMatrixOnGPU2D(int *MatA, int *MatB, int *MatC, int nx,int ny)
 {
@@ -306,9 +315,9 @@ int main(int argc, char **argv)
 
     return (0);
 }
-
 ```
 ### Simple Warp Divergence: Sum reduction
+#### 8
 ```
 #include "common.h"
 #include <cuda_runtime.h>
@@ -357,8 +366,6 @@ __global__ void reduceUnrolling8(int *g_idata, int *g_odata, unsigned int n)
         g_odata[blockIdx.x] = idata[0];
     }
 }
-
-
 
 // Function to calculate elapsed time in milliseconds
 double getElapsedTime(struct timeval start, struct timeval end)
@@ -446,6 +453,7 @@ int main()
     return 0;
 }
 ```
+#### 16
 ```
 #include "common.h"
 #include <cuda_runtime.h>
@@ -589,9 +597,12 @@ __global__ void reduceUnrolling16(int *g_idata, int *g_odata, unsigned int n)
         g_odata[blockIdx.x] = idata[0];
     }
 }
-
 ```
-### Matrix Addition with     Unified Memory
+### Matrix Addition with Unified Memory
+```
+memset(hostRef, 0, nBytes);
+memset(gpuRef, 0, nBytes);
+```
 ```
 #include "common.h"
 #include <cuda_runtime.h>
@@ -747,7 +758,6 @@ int main(int argc, char **argv)
 
     return (0);
 }
-
 ```
 ### Matrix Multiplication on Host and GPU 
 ```
@@ -834,8 +844,6 @@ int main()
 
     return 0;
 }
-
-
 ```
 ### CUDA Matrix  Transposition
 ```
